@@ -45,22 +45,60 @@ class linked_list :
 
     ## constant time insertion of a data item (any element)
     #  as the first/last (respectively) element 
-    def push_front(self, item) :
+    def push_front(self, item):
         newNode = node(item)
-        if self.head = None
+        if self.head is None:
             self.head = newNode
             self.tail = newNode
         else:
-            
+            newNode.next = self.head
+            self.head = newNode
         self.length += 1
 
-        pass
-    def push_back(self, item) : pass
+    def push_back(self, item) :
+        newNode = node(item)
+        if self.tail is None:
+            self.head = newNode
+            self.tail = newNode
+        else:
+            self.tail.next = newNode
+            newNode.prev = self.tail
+            self.tail = newNode
+        self.length += 1
+
 
     ## constant time removal of the first/last (respectively) node/item
     #  @returns the item (not the node)
-    def pop_front(self) : pass
-    def pop_back(self) : pass
+    def pop_front(self) :
+        if self.length == 0:
+            raise IndexError('pop_front called on empty linked_list')
+        else:
+            self.length -= 1
+            item = self.head.item
+            if self.length == 0:
+                self.head = self.tail = None
+            else:
+                temp = self.head
+                self.head = self.head.next
+                self.head.prev = None
+                temp.next = None
+        return item
+
+    def pop_back(self) : 
+        if self.length == 0:
+            raise IndexError('pop_back called on empty linked_list')
+        else:
+            self.length -= 1
+            item = self.tail.item
+            if self.length == 0:
+                self.head = self.tail = None
+            else:
+                temp = self.tail
+                self.tail = self.tail.prev
+                self.tail.next = None
+                temp.prev = None
+        return item
+
 
     ## Turns list into a string representation.
     #  Strings prints identical to how 
@@ -77,11 +115,21 @@ class linked_list :
 
     ## Generator function to iterate over the linked list from last to first.
     #  Generates nodes.
-    def __reversed__(self) : pass
+    def __reversed__(self) : 
+        newNode = self.tail
+        while newNode is not None:
+            yield newNode
+            newNode = newNode.prev
+
 
     ## converts linked list to a bool
     #  @returns False if empty, True otherwise
-    def __bool__(self) : pass
+    def __bool__(self) : 
+        if self.length == 0:
+            return False
+        else:
+            return True
+
 
     ## Computes length of linked list
     #  @returns the length of the linked list 
